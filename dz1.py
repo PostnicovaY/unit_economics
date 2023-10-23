@@ -1,31 +1,3 @@
-# # Функция FV = PV * (1 + i/k) ^ (k*n)
-# import math
-# def func(unknown_variable, FV = 1, PV = 1, i = 1, n = 1, k = 1, ef = 1):
-#     # Вычисление недостающей переменной
-#     if unknown_variable == "FV":
-#         FV = round(PV * (1 + i/k)**(k*n))
-#         print(f"Недостающая переменная (FV) = {FV}")
-#         return FV
-#     elif unknown_variable == "PV":
-#         PV = round(FV / ((1 + i/k)**(k*n)))
-#         print(f"Недостающая переменная (PV) = {PV}")
-#         return PV
-#     elif unknown_variable == "i":
-#         i = k * (((FV / PV)**(1/(k*n))) - 1)
-#         print(f"Недостающая переменная (i) = {round(i*100, 2)}%")
-#         return i
-#     elif unknown_variable == "n":
-#         n = (1 / (k * math.log(FV / PV))) / math.log(1 + i/k)
-#         print(f"Недостающая переменная (n) = {n}")
-#         return n
-#     elif unknown_variable == "ef":
-#         ef = (1+i/k)**k-1
-#         print(f"Недостающая переменная (ef) = {round(ef*100, 2)}%")
-#         return ef
-#     else:
-#         k = n / (math.log(FV / PV) / (math.log(1 + i/k)))
-#         print(f"Недостающая переменная (k) = {k}")
-#         return k
 # Задача 1. Инвестор купил акцию 6 лет назад по цене $10. Сейчас он продал ее за $50. 
 # Определить, какую доходность принесла ему эта инвестиция в процентах годовых.
 print("Задача 1.")
