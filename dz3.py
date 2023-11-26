@@ -4,16 +4,65 @@
 # 3 случаях, 0% в 23 случаях, потерять 5% в 6 случаях, и потерять 10% в 
 # оставшихся случаях. Определить ожидаемое значение доходности инвестиции.
 
+# Вероятности каждого исхода
+prob_15_percent = 1 / 36
+prob_10_percent = 2 / 36
+prob_5_percent = 3 / 36
+prob_0_percent = 23 / 36
+prob_minus_5_percent = 6 / 36
+prob_minus_10_percent = (36 - 1 - 2 - 3 - 23 - 6) / 36
+
+# Ожидаемая доходность
+expected_return = (0.15 * prob_15_percent) + (0.10 * prob_10_percent) + (0.05 * prob_5_percent) + (0 * prob_0_percent) + (-0.05 * prob_minus_5_percent) + (-0.10 * prob_minus_10_percent)
+
+print(f"Ожидаемая доходность инвестиции: {expected_return:.4%}")
+
 # Задача 2. Инвестиционный фонд за 7 предыдущих лет заработал следующие 
 # годовые доходности: +5%; -2%; +12%; +7%; -4%; +11%; +9%. Если предположить, 
 # что в среднем фонд будет зарабатывать такую же доходность, как и по итогам 
 # прошедших 7 лет (в смысле геометрической доходности), и вложить $100 тыс. 
 # в этот фонд, то какой ожидаемый результат будет через 5 лет?
 
+
+annual_returns = [0.05, -0.02, 0.12, 0.07, -0.04, 0.11, 0.09]
+initial_investment = 100000
+years = 5
+# Рассчитываем геометрическую доходность
+geometric_return = (1 + sum(annual_returns))**(1/len(annual_returns)) - 1
+
+# Рассчитываем будущую стоимость инвестиции через 5 лет
+future_value = initial_investment * (1 + geometric_return)**years
+
+print(f"Ожидаемая будущая стоимость инвестиции через {years} лет: ${future_value:.2f}")
+
 # Задача 3. В инвестиционном анализе есть т.н. показатель Шарпа, который 
 # характеризует эффективность инвестиции в фонд. Он рассчитывается как 
 # отношение средней доходности к риску (волатильности). Рассчитайте этот 
 # коэффициент для условий задачи 2.
+
+returns = [0.05, -0.02, 0.12, 0.07, -0.04, 0.11, 0.09]
+
+# Рассчитываем среднюю доходность (геометрическую)
+product_of_returns = 1.0
+for ret in returns:
+    product_of_returns *= 1 + ret
+geometric_mean_return = (product_of_returns ** (1 / len(returns))) - 1
+
+# Рассчитываем стандартное отклонение (волатильность)
+mean_return = sum(returns) / len(returns)
+squared_diff_sum = sum((ret - mean_return) ** 2 for ret in returns)
+volatility = (squared_diff_sum / len(returns)) ** 0.5
+
+# Безрисковая ставка
+risk_free_rate = 0.02
+
+# Рассчитываем коэффициент Шарпа
+sharpe_ratio = (geometric_mean_return - risk_free_rate) / volatility
+
+print(f"Средняя доходность (геометрическая): {geometric_mean_return:.4f}")
+print(f"Волатильность: {volatility:.4f}")
+print(f"Безрисковая ставка: {risk_free_rate:.4f}")
+print(f"Коэффициент Шарпа: {sharpe_ratio:.4f}")
 
 # Задача 4. Компания по страхованию автомобилей разделяет водителей по трем 
 # категориям в зависимости от опыта: категория 1 (стаж вождения более 10 лет), 
@@ -24,6 +73,24 @@
 # категории 2 - 3%, а для водителя категории 3 – 10%. Клиент компании 
 # застраховал автомобиль и попал в ДТП. Какова вероятность того, что он 
 # относится к категории 1?
+
+# Заданные вероятности
+P_A1 = 0.30
+P_A2 = 0.50
+P_A3 = 0.20
+
+P_B_given_A1 = 0.01
+P_B_given_A2 = 0.03
+P_B_given_A3 = 0.10
+
+# Рассчитываем числитель и знаменатель
+numerator = P_A1 * P_B_given_A1
+denominator = P_A1 * P_B_given_A1 + P_A2 * P_B_given_A2 + P_A3 * P_B_given_A3
+
+# Рассчитываем условную вероятность
+P_A1_given_B = numerator / denominator
+
+print(f"Вероятность того, что водитель относится к категории 1 при условии, что он попал в ДТП: {P_A1_given_B:.4f}")
 
 # Задача 5. Аналитик собрал статистические данные между ценой акции 
 # перерабатывающей компании и ценой ресурса, который эта компания 
@@ -36,3 +103,25 @@
 # И предположил, что цена акции зависит от цены ресурса с задержкой на 
 # 2 месяца. Определить уравнение регрессии для этого предположения и сделать 
 # на его основе прогноз цены акции на 14 месяц.
+
+months = list(range(1, 13))
+stock_price = [12.1, 15.2, 15.3, 15.7, 15.2, 16.1, 16.5, 17.1, 17.2, 17.0, 16.8, 16.9]
+resource_price = [115, 119, 121, 130, 131, 150, 155, 172, 174, 168, 161, 159]
+
+# Вычисляем средние значения
+mean_stock_price = sum(stock_price) / len(stock_price)
+mean_resource_price = sum(resource_price) / len(resource_price)
+
+# Вычисляем параметры регрессии
+numerator = sum((resource_price[i-2] - mean_resource_price) * (stock_price[i] - mean_stock_price) for i in range(2, len(stock_price)))
+denominator = sum((resource_price[i-2] - mean_resource_price)**2 for i in range(2, len(resource_price)))
+beta_1 = numerator / denominator
+beta_0 = mean_stock_price - beta_1 * mean_resource_price
+
+# Прогноз цены акции на 14 месяц
+forecast_month = 14
+forecast_stock_price = beta_0 + beta_1 * resource_price[forecast_month - 3]
+
+# Вывод результатов
+print(f"Уравнение регрессии: Y = {beta_0:.4f} + {beta_1:.4f} * X_{forecast_month-2}")
+print(f"Прогноз цены акции на {forecast_month} месяц: {forecast_stock_price:.4f}")
